@@ -1,0 +1,45 @@
+How to create a repository for existing code on your Pi
+-------------------------------------------------------
+
+First of all, go to github.com and register if you haven't done so and then login after confirming the email they sent you.
+
+Click the Book+ icon at the top right of the browser window to add a new "Repo" (code repository).
+When you create it, bear in mind that the folder name when you get the code onto your Pi will be given that name.
+Allow it to create a README file - this will help you later.
+Finish that process.
+
+Go to your Pi.
+apt-get install git
+Now go and get the repository code (which is just a README file at the moment):
+git clone http://github.com/<your username>/<your repo name>
+
+You should now have a folder called <your repo name>
+cd into the folder.
+You should see a single file - README.md.
+
+Now, get your pre-created code into the folder:
+cp <filename> .
+
+If you have folders full of code:
+cp -R <filepath> .
+
+Now, add all the files to your LOCAL repo (on your Pi):
+git add *
+
+Now commit your 'changes' to the LOCAL repo
+git commit origin master
+
+This will open up an editor (normally 'nano').
+Add a comment to say that it's your first revision. Write the file to the filename it gives you and then exit.
+This will commit it to the local repo.
+
+Now upload it to the remote repo at github.com
+git push origin master
+Put your username/password in and it should upload. You can check this in your browser as the 'age' should change to something like "a minute ago"
+
+From now on when you change or add a file, you should just do:
+git commit .
+git push
+
+If it says "Everything up-to-date" then you've uploaded all your changes already.
+
