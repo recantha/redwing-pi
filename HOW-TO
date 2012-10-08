@@ -1,6 +1,3 @@
-How to create a repository for existing code on your Pi
--------------------------------------------------------
-
 First of all, go to github.com and register if you haven't done so and then login after confirming the email they sent you.
 
 Click the Book+ icon at the top right of the browser window to add a new "Repo" (code repository).
@@ -37,9 +34,11 @@ Now upload it to the remote repo at github.com
 git push origin master
 Put your username/password in and it should upload. You can check this in your browser as the 'age' should change to something like "a minute ago"
 
-From now on when you change or add a file, you should just do:
+From now on when you add a file, do
+git add *
+
+From now on when you change a file, you should just do:
 git commit .
 git push
 
 If it says "Everything up-to-date" then you've uploaded all your changes already.
-
