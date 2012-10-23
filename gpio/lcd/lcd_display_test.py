@@ -69,10 +69,11 @@ def main():
 	# Send some test
 
 	local_hostname=socket.gethostname()
+
 	lcd_byte(LCD_LINE_1, LCD_CMD)
-	lcd_string('Hello James')
+	lcd_string('LCD display test')
 	lcd_byte(LCD_LINE_2, LCD_CMD)
-	lcd_string('Fancy chinese')
+	lcd_string('for Raspberry Pi')
 
 	time.sleep(5) # 3 second delay
 

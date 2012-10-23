@@ -6,8 +6,8 @@
 #include <errno.h>  
 #include <sys/time.h>  
 #include <wiringPi.h>  
-#define TRIGGER_PIN 18  
-#define ECHO_PIN  23  
+#define TRIGGER_PIN 4  
+#define ECHO_PIN  17  
 #define TIMEOUT 999 /* any value other than LOW or HIGH */  
 int waitforpin(int pin, int level, int timeout)  
 {  

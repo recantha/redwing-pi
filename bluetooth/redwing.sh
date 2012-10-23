@@ -27,6 +27,8 @@ main() {
 			"get_connection_pin"			"Run script to get PIN for bluetooth connections" \
 			"integrate_rii_connection"		"Auto-run the Rii connection script on login" \
 			"rfcomm_devices_create"			"[Advanced] Create RFCOMM devices" \
+			"show_paired_devices"			"Show current paired devices" \
+			"bluetooth_scan"			"Scan for Bluetooth devices" \
                 3>&1 1>&2 2>&3 \
                 )
 

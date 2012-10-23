@@ -14,10 +14,14 @@ if [ "$2" != "" ];then
 	MAX_ATTEMPTS=$2
 fi
 
+clear
 echo "***************************"
 echo "Bluetooth connection helper"
 echo "***************************"
 echo "Attempting connection to $BT_ADDRESS. Max $MAX_ATTEMPTS attempt(s)"
+
+echo ""
+echo "Press your pairing button NOW"
 
 if [ "$1" = "restart" ];then
 	echo "Restarting bluetooth"
@@ -71,4 +75,5 @@ while (sleep 3);do
 	fi
 done
 echo "**********************************"
-
+echo "Press any key to finish"
+read -n1 -s IGNORE

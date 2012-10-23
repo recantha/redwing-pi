@@ -1,3 +1,4 @@
+cd /boot/redwing-pi
 fn_run() {
         CHOICE=$1
         CMD=$CHOICE'.sh'
