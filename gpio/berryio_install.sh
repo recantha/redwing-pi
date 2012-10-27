@@ -29,5 +29,3 @@ berryio help
 
 # Test email is working
 berryio email_ip
-
-

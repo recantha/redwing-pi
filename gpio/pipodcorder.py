@@ -1,31 +1,15 @@
 #!/usr/bin/python
-#
-# HD44780 LCD Test Script for
-# Raspberry Pi
-#
+# PiPodCorder main script
+# for Raspberry Pi
+# by Michael Horne (www.recantha.co.uk/blog)
+# Date: 27/10/2012
+
+# Contributions taken from
+# HD44780 LCD Test Script
 # Author : Matt Hawkins
 # Site	 : http://www.raspberrypi-spy.co.uk
-# 
-# Date	 : 26/07/2012
-#
 
-# The wiring for the LCD is as follows:
-# 1 : GND
-# 2 : 5V
-# 3 : Contrast (0-5V)*
-# 4 : RS (Register Select)
-# 5 : R/W (Read Write)			 - GROUND THIS PIN
-# 6 : Enable or Strobe
-# 7 : Data Bit 0						 - NOT USED
-# 8 : Data Bit 1						 - NOT USED
-# 9 : Data Bit 2						 - NOT USED
-# 10: Data Bit 3						 - NOT USED
-# 11: Data Bit 4
-# 12: Data Bit 5
-# 13: Data Bit 6
-# 14: Data Bit 7
-# 15: LCD Backlight +5V**
-# 16: LCD Backlight GND
+# Adafruit I2C Library
 
 #import
 import RPi.GPIO as GPIO
@@ -34,6 +18,9 @@ import os
 import socket
 import subprocess as sub
 
+###################
+# LCD CONFIGURATION
+###################
 # Define GPIO to LCD mapping
 LCD_RS = 7
 LCD_E	= 8
@@ -54,6 +41,11 @@ LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
 E_PULSE = 0.00005
 E_DELAY = 0.00005
 
+def read_temperature():
+	gettemp = sub.Popen(['tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
+	temp = gettemp.communicate()
+	return temp[0]
+
 def main():
 	# Main program block
 	GPIO.setmode(GPIO.BCM)			 # Use BCM GPIO numbers
@@ -66,15 +58,21 @@ def main():
 
 	# Initialise display
 	lcd_init()
-	time.sleep(2)
+	time.sleep(1)
 
-	p=sub.Popen('pwd', stdout=sub.PIPE, stderr=sub.PIPE)
-	output, errors = p.communicate()
-	send_to_lcd(output, '')
+	send_to_lcd("Hello Milton", "Keynes Raspi Jam")
+
+	send_to_lcd("-==============-", "-=PiPodCorder=-")
+	time.sleep(0.5)
 
 	local_hostname=socket.gethostname()
-	send_to_lcd('LCD display test', 'for Raspberry Pi')
 	send_to_lcd(local_hostname, socket.gethostbyname(local_hostname))
+
+	for t in range(0,10):
+		temperature=read_temperature()
+		send_to_lcd('Room temperature', temperature)
+
+	lcd_init()
 
 def send_to_lcd(_line_1, _line_2):
 	lcd_byte(LCD_LINE_1, LCD_CMD)
@@ -82,7 +80,7 @@ def send_to_lcd(_line_1, _line_2):
 	lcd_byte(LCD_LINE_2, LCD_CMD)
 	lcd_string(_line_2)
 
-	time.sleep(5) # 3 second delay
+	time.sleep(1) # 3 second delay
 
 def lcd_init():
 	# Initialise display
@@ -100,7 +98,7 @@ def lcd_string(message):
 
 	for i in range(LCD_WIDTH):
 		lcd_byte(ord(message[i]),LCD_CHR)
-		time.sleep(0.1)
+		time.sleep(0.02)
 
 def lcd_byte(bits, mode):
 	# Send byte to data pins
@@ -154,5 +152,6 @@ def lcd_byte(bits, mode):
 
 if __name__ == '__main__':
 	main()
+
 
 
