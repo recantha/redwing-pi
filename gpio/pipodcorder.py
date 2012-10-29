@@ -42,7 +42,7 @@ E_PULSE = 0.00005
 E_DELAY = 0.00005
 
 def read_temperature():
-	gettemp = sub.Popen(['tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
+	gettemp = sub.Popen(['/boot/redwing-pi/gpio/tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
 	temp = gettemp.communicate()
 	return temp[0]
 
@@ -60,19 +60,19 @@ def main():
 	lcd_init()
 	time.sleep(1)
 
-	send_to_lcd("Hello Milton", "Keynes Raspi Jam")
+	while True:
+		send_to_lcd("Hello Milton", "Keynes Raspi Jam")
+		send_to_lcd("-==============-", "-=PiPodCorder=-")
+		time.sleep(0.5)
 
-	send_to_lcd("-==============-", "-=PiPodCorder=-")
-	time.sleep(0.5)
+		#local_hostname=socket.gethostname()
+		#send_to_lcd(local_hostname, socket.gethostbyname(local_hostname))
+		send_to_lcd("Test","Test")
+		for t in range(0,10):
+			temperature=read_temperature()
+			send_to_lcd('Room temperature', temperature)
 
-	local_hostname=socket.gethostname()
-	send_to_lcd(local_hostname, socket.gethostbyname(local_hostname))
-
-	for t in range(0,10):
-		temperature=read_temperature()
-		send_to_lcd('Room temperature', temperature)
-
-	lcd_init()
+		lcd_init()
 
 def send_to_lcd(_line_1, _line_2):
 	lcd_byte(LCD_LINE_1, LCD_CMD)
@@ -152,6 +152,3 @@ def lcd_byte(bits, mode):
 
 if __name__ == '__main__':
 	main()
-
-
-
