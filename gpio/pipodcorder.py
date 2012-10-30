@@ -57,22 +57,20 @@ def main():
 	GPIO.setup(LCD_D7, GPIO.OUT) # DB7
 
 	# Initialise display
-	lcd_init()
-	time.sleep(1)
 
 	while True:
-		send_to_lcd("Hello Milton", "Keynes Raspi Jam")
-		send_to_lcd("-==============-", "-=PiPodCorder=-")
+		lcd_init()
+		time.sleep(1)
+		send_to_lcd("-=====v==v====-", "-=PiPodCorder=-")
 		time.sleep(0.5)
 
-		#local_hostname=socket.gethostname()
-		#send_to_lcd(local_hostname, socket.gethostbyname(local_hostname))
-		send_to_lcd("Test","Test")
+		local_hostname=socket.gethostname()
+		send_to_lcd(local_hostname, socket.gethostbyname(local_hostname))
 		for t in range(0,10):
 			temperature=read_temperature()
 			send_to_lcd('Room temperature', temperature)
-
-		lcd_init()
+			time.sleep(0.2)
+			send_to_lcd('Room temperature', temperature+".........")
 
 def send_to_lcd(_line_1, _line_2):
 	lcd_byte(LCD_LINE_1, LCD_CMD)
