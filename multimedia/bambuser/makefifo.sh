@@ -1,0 +1,2 @@
+mkfifo /tmp/outfile.flv
+

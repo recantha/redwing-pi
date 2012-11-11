@@ -1,0 +1,7 @@
+﻿00:00:00 T:0   DEBUG: DllBcm: Using omx system library
+00:00:00 T:0   DEBUG: DllOMX: Using omx system library
+00:00:00 T:0   DEBUG: DllAvFormat: Using libavformat system library
+00:00:00 T:0   DEBUG: DllAvUtilBase: Using libavutil system library
+00:00:00 T:0   DEBUG: DllAvCodec: Using libavcodec system library
+00:00:00 T:0   DEBUG: DllAvFormat: Using libavformat system library
+00:00:00 T:0   ERROR: COMXPlayer::OpenFile - /root/tboplayer/Les
