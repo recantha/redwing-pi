@@ -23,3 +23,8 @@ The menu system (which is not always up-to-date) can be used by running ./redwin
 Some of these scripts are incomplete, some of them only work for the purpose I was aiming at at the time. But I hope it's of use to someone somewhere who is just starting out with the Pi and wants to move on to some of the cooler things it can do.
 
 You can contact me at mike@recantha.co.uk or on my blog if you have any questions or problems getting the scripts to run or do what you want them to do.
+
+
+
+.
+
