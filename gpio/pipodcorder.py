@@ -75,8 +75,11 @@ def main():
 def send_to_lcd(_line_1, _line_2):
 	lcd_byte(LCD_LINE_1, LCD_CMD)
 	lcd_string(_line_1)
+	print _line_1
+
 	lcd_byte(LCD_LINE_2, LCD_CMD)
 	lcd_string(_line_2)
+	print _line_2
 
 	time.sleep(1) # 3 second delay
 

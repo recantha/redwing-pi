@@ -3,8 +3,8 @@ import RPi.GPIO as GPIO
 from datetime import datetime
 import time
 
-trigger_pin=4
-echo_pin=17
+trigger_pin=14
+echo_pin=4
 number_of_samples=10
 
 GPIO.setmode(GPIO.BCM)
@@ -50,4 +50,4 @@ for j in range(number_of_readings):
 average_of_all_readings = sum(all_readings)/number_of_readings
 average_distance=average_of_all_readings * 340
 average_distance=average_distance/20000
-print "Approx distance is %s cm" % average_distance
+print "%s cm" % average_distance
