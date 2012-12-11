@@ -46,6 +46,11 @@ def read_temperature():
 	temp = gettemp.communicate()
 	return temp[0]
 
+def read_sonar():
+	getdata = sub.Popen(['/boot/redwing-pi/gpio/ultrasonic/sonar_ping.py'], stdout=sub.PIPE, stderr=sub.PIPE)
+	temp = getdata.communicate()
+	return temp[0]
+
 def main():
 	# Main program block
 	GPIO.setmode(GPIO.BCM)			 # Use BCM GPIO numbers
@@ -71,6 +76,15 @@ def main():
 			send_to_lcd('Room temperature', temperature)
 			time.sleep(0.2)
 			send_to_lcd('Room temperature', temperature+".........")
+
+		for t in range(0,2):
+			distance=read_sonar()
+			send_to_lcd('Target distance', distance)
+			time.sleep(0.2)
+			send_to_lcd('Target distance', distance+".....")
+
+
+		time.sleep(1)
 
 def send_to_lcd(_line_1, _line_2):
 	lcd_byte(LCD_LINE_1, LCD_CMD)
