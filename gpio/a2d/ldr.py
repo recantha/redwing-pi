@@ -4,7 +4,7 @@ import os
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
-DEBUG = 0
+DEBUG = 1
 
 # read SPI data from MCP3008 chip, 8 possible adc's (0 thru 7)
 def readadc(adcnum, clockpin, mosipin, misopin, cspin):
@@ -55,34 +55,33 @@ GPIO.setup(SPICLK, GPIO.OUT)
 GPIO.setup(SPICS, GPIO.OUT)
 
 # 10k trim pot connected to adc #0
-potentiometer_adc = 0;
+ldr_port = 1;
 
 last_read = 0       # this keeps track of the last potentiometer value
-tolerance = 5       # to keep from being jittery we'll only change
-                    # volume when the pot has moved more than 5 'counts'
+tolerance = 1       # to keep from being jittery we'll only change
 
 while True:
         # we'll assume that the pot didn't move
-        trim_pot_changed = False
+        reading_changed = False
 
         # read the analog pin
-        trim_pot = readadc(potentiometer_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
+        port_reading = readadc(ldr_port, SPICLK, SPIMOSI, SPIMISO, SPICS)
         # how much has it changed since the last read?
-        pot_adjust = abs(trim_pot - last_read)
+        pot_adjust = abs(port_reading - last_read)
 
         if DEBUG:
-                print "trim_pot:", trim_pot
+                print "port_reading:", port_reading
                 print "pot_adjust:", pot_adjust
                 print "last_read", last_read
 
         if ( pot_adjust > tolerance ):
-               trim_pot_changed = True
+               reading_changed = True
 
         if DEBUG:
-                print "trim_pot_changed", trim_pot_changed
+                print "reading_changed", reading_changed
 
-        if ( trim_pot_changed ):
-                set_volume = trim_pot / 10.24           # convert 10bit adc0 (0-1024) trim pot read into 0-100 volume level
+        if ( reading_changed ):
+                set_volume = port_reading / 10.24           # convert 10bit adc0 (0-1024) trim pot read into 0-100 volume level
                 set_volume = round(set_volume)          # round out decimal value
                 set_volume = int(set_volume)            # cast volume as integer
 
@@ -96,7 +95,7 @@ while True:
                         print "tri_pot_changed", set_volume
 
         # save the potentiometer reading for the next loop
-        last_read = trim_pot
+        last_read = port_reading
         # hang out and do nothing for a half second
         time.sleep(0.5)
 
