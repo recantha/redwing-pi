@@ -1,0 +1,130 @@
+
+
+
+
+
+
+
+
+	
+
+
+
+.build/leonardo/arduino/wiring_shift.d : /usr/share/arduino/hardware/arduino/cores/arduino/wiring_shift.c
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/wiring_shift.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/wiring_digital.d : /usr/share/arduino/hardware/arduino/cores/arduino/wiring_digital.c
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/wiring_digital.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/Stream.d : /usr/share/arduino/hardware/arduino/cores/arduino/Stream.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/Stream.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/WMath.d : /usr/share/arduino/hardware/arduino/cores/arduino/WMath.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/WMath.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/CDC.d : /usr/share/arduino/hardware/arduino/cores/arduino/CDC.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/CDC.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/HID.d : /usr/share/arduino/hardware/arduino/cores/arduino/HID.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/HID.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/WInterrupts.d : /usr/share/arduino/hardware/arduino/cores/arduino/WInterrupts.c
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/WInterrupts.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/new.d : /usr/share/arduino/hardware/arduino/cores/arduino/new.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/new.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/USBCore.d : /usr/share/arduino/hardware/arduino/cores/arduino/USBCore.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/USBCore.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/IPAddress.d : /usr/share/arduino/hardware/arduino/cores/arduino/IPAddress.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/IPAddress.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/wiring_analog.d : /usr/share/arduino/hardware/arduino/cores/arduino/wiring_analog.c
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/wiring_analog.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/Print.d : /usr/share/arduino/hardware/arduino/cores/arduino/Print.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/Print.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/wiring.d : /usr/share/arduino/hardware/arduino/cores/arduino/wiring.c
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/wiring.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/wiring_pulse.d : /usr/share/arduino/hardware/arduino/cores/arduino/wiring_pulse.c
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/wiring_pulse.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/HardwareSerial.d : /usr/share/arduino/hardware/arduino/cores/arduino/HardwareSerial.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/HardwareSerial.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/main.d : /usr/share/arduino/hardware/arduino/cores/arduino/main.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/main.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/Tone.d : /usr/share/arduino/hardware/arduino/cores/arduino/Tone.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/Tone.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+.build/leonardo/arduino/WString.d : /usr/share/arduino/hardware/arduino/cores/arduino/WString.cpp
+	@mkdir -p .build/leonardo/arduino
+	@/usr/bin/avr-gcc -mmcu=atmega32u4 -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -DUSB_VID=0x2341 -DUSB_PID=0x8036 -I/usr/share/arduino/hardware/arduino/variants/leonardo -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/libraries/Ethernet -I/usr/share/arduino/libraries/Ethernet/utility -I/usr/share/arduino/libraries/Stepper -I/usr/share/arduino/libraries/SPI -I/usr/share/arduino/libraries/Servo -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/libraries/LiquidCrystal -I/usr/share/arduino/libraries/EEPROM -I/usr/share/arduino/libraries/Firmata -I/usr/share/arduino/libraries/SD -I/usr/share/arduino/libraries/SD/utility  -MM $^ > $@
+	
+	@printf ".build/leonardo/arduino/WString.d .build/leonardo/arduino/" | cat - $@ > $@~ && mv $@~ $@
+
+
+
+.build/leonardo/arduino/dependencies.d : .build/leonardo/arduino/wiring_shift.d .build/leonardo/arduino/wiring_digital.d .build/leonardo/arduino/Stream.d .build/leonardo/arduino/WMath.d .build/leonardo/arduino/CDC.d .build/leonardo/arduino/HID.d .build/leonardo/arduino/WInterrupts.d .build/leonardo/arduino/new.d .build/leonardo/arduino/USBCore.d .build/leonardo/arduino/IPAddress.d .build/leonardo/arduino/wiring_analog.d .build/leonardo/arduino/Print.d .build/leonardo/arduino/wiring.d .build/leonardo/arduino/wiring_pulse.d .build/leonardo/arduino/HardwareSerial.d .build/leonardo/arduino/main.d .build/leonardo/arduino/Tone.d .build/leonardo/arduino/WString.d
+	@echo [96mScanning dependencies of arduino[0m
+	@mkdir -p .build/leonardo/arduino
+	@cat $^ > $@;
+
+all : .build/leonardo/arduino/dependencies.d
+	@true
+

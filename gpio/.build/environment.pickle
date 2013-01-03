@@ -1,0 +1,12 @@
+(lp0
+(S'serial'
+p1
+S'/usr/bin/picocom'
+p2
+tp3
+a(S'build_dir'
+p4
+S'.build/uno'
+p5
+tp6
+a.

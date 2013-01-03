@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/leonardo/src/tester.cpp : src/tester.ino
+	@mkdir -p .build/leonardo/src
+	@echo [93msrc/tester.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
+
+
+all : .build/leonardo/src/tester.cpp
+	@true
+
