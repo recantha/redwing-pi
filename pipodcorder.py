@@ -16,7 +16,9 @@ import RPi.GPIO as GPIO
 import time
 import os
 import socket
+import commands
 import subprocess as sub
+import serial
 
 ###################
 # LCD CONFIGURATION
@@ -41,16 +43,34 @@ LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
 E_PULSE = 0.00005
 E_DELAY = 0.00005
 
+ENABLE_TEMPERATURE=True
+ENABLE_DISTANCE=False
+ENABLE_SERIAL=True
+
+if ENABLE_SERIAL:
+	SERIAL = serial.Serial('/dev/ttyACM0', 9600)
+
+def get_ip_addresses():
+	ips = commands.getoutput("/sbin/ifconfig | grep -i \"inet\" | grep -iv \"inet6\" | " + "awk {'print $2'} | sed -ne 's/addr\:/ /p'")
+	addrs = ips.split('\n')
+	return addrs
+
 def read_temperature():
-	gettemp = sub.Popen(['/boot/redwing-pi/gpio/tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
+	gettemp = sub.Popen(['gpio/tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
 	temp = gettemp.communicate()
 	return temp[0]
 
 def read_sonar():
-	getdata = sub.Popen(['/boot/redwing-pi/gpio/ultrasonic/sonar_ping.py'], stdout=sub.PIPE, stderr=sub.PIPE)
+	getdata = sub.Popen(['gpio/ultrasonic/sonar_ping.py'], stdout=sub.PIPE, stderr=sub.PIPE)
 	temp = getdata.communicate()
 	return temp[0]
 
+def read_arduino():
+	line = SERIAL.readline()
+	line = line.rstrip("\n")
+	line = line.rstrip("\r")
+	return line
+	
 def main():
 	# Main program block
 	GPIO.setmode(GPIO.BCM)			 # Use BCM GPIO numbers
@@ -63,25 +83,33 @@ def main():
 
 	# Initialise display
 
+	time.sleep(0.5)
+	send_to_lcd("-=====v==v====-", "-=PiPodCorder=-")
+	time.sleep(0.5)
+
 	while True:
 		lcd_init()
-		time.sleep(1)
-		send_to_lcd("-=====v==v====-", "-=PiPodCorder=-")
-		time.sleep(0.5)
 
 		local_hostname=socket.gethostname()
-		send_to_lcd(local_hostname, socket.gethostbyname(local_hostname))
-		for t in range(0,10):
-			temperature=read_temperature()
-			send_to_lcd('Room temperature', temperature)
-			time.sleep(0.2)
-			send_to_lcd('Room temperature', temperature+".........")
+		for addr in get_ip_addresses():
+			send_to_lcd(local_hostname, addr)
+			time.sleep(0.5)
 
-		for t in range(0,2):
-			distance=read_sonar()
-			send_to_lcd('Target distance', distance)
+		if ENABLE_SERIAL:
+			send_to_lcd('Arduino', read_arduino())
+
+		if ENABLE_TEMPERATURE:
+			temperature=read_temperature()
+			send_to_lcd('On-plate temp', temperature)
 			time.sleep(0.2)
-			send_to_lcd('Target distance', distance+".....")
+			send_to_lcd('On-plate temp', temperature+".........")
+
+		if ENABLE_DISTANCE:
+			for t in range(0,2):
+				distance=read_sonar()
+				send_to_lcd('Target distance', distance)
+				time.sleep(0.2)
+				send_to_lcd('Target distance', distance+".....")
 
 
 		time.sleep(1)
