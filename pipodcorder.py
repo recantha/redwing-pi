@@ -66,6 +66,7 @@ def read_sonar():
 	return temp[0]
 
 def read_arduino():
+	SERIAL.flushInput()
 	line = SERIAL.readline()
 	line = line.rstrip("\n")
 	line = line.rstrip("\r")
@@ -73,6 +74,7 @@ def read_arduino():
 	
 def main():
 	# Main program block
+	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)			 # Use BCM GPIO numbers
 	GPIO.setup(LCD_E, GPIO.OUT)	# E
 	GPIO.setup(LCD_RS, GPIO.OUT) # RS
@@ -83,7 +85,8 @@ def main():
 
 	# Initialise display
 
-	time.sleep(0.5)
+	send_to_lcd("          ", "         ")
+	time.sleep(3)
 	send_to_lcd("-=====v==v====-", "-=PiPodCorder=-")
 	time.sleep(0.5)
 
@@ -96,7 +99,9 @@ def main():
 			time.sleep(0.5)
 
 		if ENABLE_SERIAL:
-			send_to_lcd('Arduino', read_arduino())
+			number_of_serial_reads = 3
+			for i in range(number_of_serial_reads):
+				send_to_lcd('Arduino', read_arduino())
 
 		if ENABLE_TEMPERATURE:
 			temperature=read_temperature()

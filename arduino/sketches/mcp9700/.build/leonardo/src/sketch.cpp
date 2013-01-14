@@ -9,12 +9,14 @@ float calibration = -55;
 int tempPin = 0;
 
 int redPin = 10;
+int greenPin = 9;
 
 void setup()
 {
 	Serial.begin(9600);
 	pinMode(tempPin, INPUT);
 	pinMode(redPin, OUTPUT);
+	pinMode(greenPin, OUTPUT);
 }
 
 void loop()
@@ -24,6 +26,7 @@ void loop()
 	temp = temp + calibration;
 
 	digitalWrite(redPin, HIGH);
+	digitalWrite(greenPin, LOW);
 
 	Serial.print("Temp:");
 	Serial.print (temp);
@@ -31,5 +34,6 @@ void loop()
 	delay(200);
 
 	digitalWrite(redPin, LOW);
+	digitalWrite(greenPin, HIGH);
 	delay(200);
 }
