@@ -170,6 +170,7 @@ def main():
 	send_to_lcd("-====v==v====-", "-= Shutdown =-")
 
 	FIRMATA_BOARD.exit()
+	sys.exit(0)
 
 # LCD FUNCTIONS
 def send_to_lcd(_line_1, _line_2):
