@@ -20,6 +20,9 @@ import commands
 import subprocess as sub
 import serial
 import pyfirmata
+import sys
+
+from datetime import datetime
 
 ###################
 # LCD CONFIGURATION
@@ -44,60 +47,91 @@ LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
 E_PULSE = 0.00005
 E_DELAY = 0.00005
 
-################################
-# Switch on/off various parts of the 'corder
-################################
-ENABLE_IP=False
-ENABLE_TEMPERATURE=False
-ENABLE_DISTANCE=False
-ENABLE_SERIAL=False
-ENABLE_FIRMATA=True
-
-if ENABLE_SERIAL:
-	SERIAL = serial.Serial('/dev/ttyACM0', 9600)
+# Not used for Firmata
+#	SERIAL = serial.Serial('/dev/ttyACM0', 9600)
 
 # Define Firmata-enabled Arduino
-if ENABLE_FIRMATA:
-	FIRMATA_BOARD = pyfirmata.Arduino('/dev/ttyACM0')
-	it = pyfirmata.util.Iterator(FIRMATA_BOARD)
-	it.start()
+FIRMATA_BOARD = pyfirmata.Arduino('/dev/ttyACM0')
+it = pyfirmata.util.Iterator(FIRMATA_BOARD)
+it.start()
 
-	# temperature
-	FIRMATA_PIN_TEMPERATURE=FIRMATA_BOARD.get_pin('a:0:i')
-	# magnetism
-	FIRMATA_PIN_MAGNET=FIRMATA_BOARD.get_pin('a:1:i')
-	# light
-	FIRMATA_PIN_LDR=FIRMATA_BOARD.get_pin('a:2:i')
-	# red LED
-	FIRMATA_PIN_RED_LED=FIRMATA_BOARD.get_pin('d:10:p')
-	# green LED
-	FIRMATA_PIN_GREEN_LED=FIRMATA_BOARD.get_pin('d:9:p')
-
-	# switches
-	FIRMATA_PIN_MENU_STEP=FIRMATA_BOARD.get_pin('d:6:i')
-	FIRMATA_PIN_MENU_SELECT=FIRMATA_BOARD.get_pin('d:5:i')
+FIRMATA_PIN_TEMPERATURE=FIRMATA_BOARD.get_pin('a:3:i')
+FIRMATA_PIN_MAGNET=FIRMATA_BOARD.get_pin('a:1:i')
+FIRMATA_PIN_LDR=FIRMATA_BOARD.get_pin('a:2:i')
+FIRMATA_PIN_RED_LED=FIRMATA_BOARD.get_pin('d:10:p')
+FIRMATA_PIN_GREEN_LED=FIRMATA_BOARD.get_pin('d:9:p')
+FIRMATA_PIN_MENU_STEP=FIRMATA_BOARD.get_pin('d:6:i')
+FIRMATA_PIN_MENU_EXIT=FIRMATA_BOARD.get_pin('d:5:i')
+FIRMATA_PIN_US_TRIGGER=FIRMATA_BOARD.get_pin('d:3:p')
+FIRMATA_PIN_US_ECHO=FIRMATA_BOARD.get_pin('d:2:i')
 
 def get_ip_addresses():
+	FIRMATA_PIN_GREEN_LED.write(1)
 	ips = commands.getoutput("/sbin/ifconfig | grep -i \"inet\" | grep -iv \"inet6\" | " + "awk {'print $2'} | sed -ne 's/addr\:/ /p'")
 	addrs = ips.split('\n')
+	FIRMATA_PIN_GREEN_LED.write(0)
 	return addrs
 
 def read_temperature():
+	FIRMATA_PIN_GREEN_LED.write(1)
 	gettemp = sub.Popen(['gpio/tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
 	temp = gettemp.communicate()
+	FIRMATA_PIN_GREEN_LED.write(0)
 	return temp[0]
 
-def read_sonar():
-	getdata = sub.Popen(['gpio/ultrasonic/sonar_ping.py'], stdout=sub.PIPE, stderr=sub.PIPE)
-	temp = getdata.communicate()
-	return temp[0]
-def read_arduino():
-	SERIAL.flushInput()
-	line = SERIAL.readline()
-	line = line.rstrip("\n")
-	line = line.rstrip("\r")
-	return line
-	
+def read_ultrasonic():
+	return "Coming soon"
+	#Use sonar_ping.py
+
+
+def read_arduino_temperature():
+	while FIRMATA_PIN_TEMPERATURE.read() is None:
+		pass
+
+	temp_pin_read = FIRMATA_PIN_TEMPERATURE.read()
+	temp_factored = temp_pin_read * 1024
+	per_step = 5000 / 1024 # 5v / 1024 steps = 4.88mV per step
+	temp_stepped = temp_factored * per_step
+	temp_based = temp_stepped - 500 # 500 is the reference voltage for 0oC
+	# fiddle around with it - the + figure on the end is calibration
+	temperature_string = temp_based / 10 + 8
+	temperature_string = "%1.f oC" % temperature_string
+
+	return temperature_string
+
+############## MENU HANDLER ####################
+MENU_KEY = ["IP address", "Onboard temp", "Arduino temp", "Arduino LDR", "Arduino magnet", "Arduino distance"]
+def processMenuItem(step):
+	reading_text = "TBD"
+
+	if step == 0:
+		local_hostname=socket.gethostname()
+		for addr in get_ip_addresses():
+			send_to_lcd(local_hostname, addr)
+			time.sleep(0.5)
+
+	if step == 1:
+		reading_text = read_temperature()
+		send_to_lcd(MENU_KEY[step], reading_text)
+
+	if step == 2:
+		reading_text = read_arduino_temperature()
+		send_to_lcd(MENU_KEY[step], reading_text)
+
+	if step == 3:
+		llevel="%.1f lux" % (FIRMATA_PIN_LDR.read() * 5 * 100)
+		send_to_lcd(MENU_KEY[step], llevel)
+
+	if step == 4:
+		magnt="%.1f g" % (FIRMATA_PIN_MAGNET.read() * 5 * 100)
+		send_to_lcd(MENU_KEY[step], magnt)
+
+	if step == 5:
+		distance_text = read_ultrasonic()
+		send_to_lcd(MENU_KEY[step], distance_text)
+
+
+
 def main():
 	# Main program block
 	GPIO.setwarnings(False)
@@ -110,75 +144,32 @@ def main():
 	GPIO.setup(LCD_D7, GPIO.OUT) # DB7
 
 	# Initialise display
-
-	send_to_lcd("          ", "         ")
-	time.sleep(2)
-	send_to_lcd("-=====v==v====-", "-=PiPodCorder=-")
+	lcd_init()
 	time.sleep(0.5)
 
-	if ENABLE_FIRMATA:
-		while FIRMATA_PIN_TEMPERATURE.read() is None:
-			pass
+	# header
+	send_to_lcd("          ", "         ")
+	time.sleep(2)
+	send_to_lcd("-=PiPodCorder=-", "Starting up...")
+	time.sleep(0.5)
+	#lcd_init()
 
-	while True:
-		lcd_init()
+	CURRENT_MENU_KEY=0
+	EXIT_KEY_PRESSED=False
 
-		if ENABLE_IP:
-			local_hostname=socket.gethostname()
-			for addr in get_ip_addresses():
-				send_to_lcd(local_hostname, addr)
-				time.sleep(0.5)
+	while not EXIT_KEY_PRESSED:
+		step_pressed=FIRMATA_PIN_MENU_STEP.read()
+		if step_pressed:
+			CURRENT_MENU_KEY=CURRENT_MENU_KEY+1
+			if CURRENT_MENU_KEY == len(MENU_KEY):
+				CURRENT_MENU_KEY=0
+		processMenuItem(CURRENT_MENU_KEY)
 
-		if ENABLE_SERIAL:
-			number_of_serial_reads = 3
-			for i in range(number_of_serial_reads):
-				send_to_lcd('Arduino', read_arduino())
+		EXIT_KEY_PRESSED=FIRMATA_PIN_MENU_EXIT.read()
 
-		if ENABLE_TEMPERATURE:
-			temperature=read_temperature()
-			send_to_lcd('On-plate temp', temperature)
-			time.sleep(0.2)
-			send_to_lcd('On-plate temp', temperature+".........")
+	send_to_lcd("-====v==v====-", "-= Shutdown =-")
 
-		if ENABLE_DISTANCE:
-			for t in range(0,2):
-				distance=read_sonar()
-				send_to_lcd('Target distance', distance)
-				time.sleep(0.2)
-				send_to_lcd('Target distance', distance+".....")
-
-
-		if ENABLE_FIRMATA:
-			for i in range(1):
-				FIRMATA_PIN_RED_LED.write(0)
-				FIRMATA_PIN_GREEN_LED.write(1)
-
-		#		temp_pin_read = FIRMATA_PIN_TEMPERATURE.read()
-		#		tempCalc = ((temp_pin_read*4.88) - 500) / 10
-		#		tempCalc = ((temp_pin_read*5.43) / 0.1)
-		#		print tempCalc
-
-		#		temp="%.1f oC" % (FIRMATA_PIN_TEMPERATURE.read() * 5 * 100)
-		#		send_to_lcd('Arduino temp', temp)
-
-		#		magnt="%.1f g" % (FIRMATA_PIN_MAGNET.read() * 5 * 100)
-		#		send_to_lcd('Magnetism', magnt)
-
-		#		llevel="%.1f lux" % (FIRMATA_PIN_LDR.read() * 5 * 100)
-		#		send_to_lcd('Light level', llevel)
-
-				print "Menu step"
-				print FIRMATA_PIN_MENU_STEP.read()
-				print "Menu select"
-				print FIRMATA_PIN_MENU_SELECT.read()
-
-				FIRMATA_PIN_RED_LED.write(1)
-				FIRMATA_PIN_GREEN_LED.write(0)
-
-		time.sleep(0.1)
-
-	if ENABLE_FIRMATA:
-		FIRMATA_BOARD.exit()
+	FIRMATA_BOARD.exit()
 
 # LCD FUNCTIONS
 def send_to_lcd(_line_1, _line_2):
