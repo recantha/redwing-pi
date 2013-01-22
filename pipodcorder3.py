@@ -65,12 +65,27 @@ FIRMATA_PIN_MENU_EXIT=FIRMATA_BOARD.get_pin('d:5:i')
 FIRMATA_PIN_US_TRIGGER=FIRMATA_BOARD.get_pin('d:3:p')
 FIRMATA_PIN_US_ECHO=FIRMATA_BOARD.get_pin('d:2:i')
 
+trigger_pin=27
+echo_pin=22
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(trigger_pin, GPIO.OUT)
+GPIO.setup(echo_pin, GPIO.IN)
+
+
+
+#################################
+# TRICORDER FUNCTIONS
+#################################
+
 def get_ip_addresses():
 	FIRMATA_PIN_GREEN_LED.write(1)
 	ips = commands.getoutput("/sbin/ifconfig | grep -i \"inet\" | grep -iv \"inet6\" | " + "awk {'print $2'} | sed -ne 's/addr\:/ /p'")
 	addrs = ips.split('\n')
 	FIRMATA_PIN_GREEN_LED.write(0)
 	return addrs
+
+
 
 def read_temperature():
 	FIRMATA_PIN_GREEN_LED.write(1)
@@ -79,10 +94,97 @@ def read_temperature():
 	FIRMATA_PIN_GREEN_LED.write(0)
 	return temp[0]
 
-def read_ultrasonic():
-	return "Coming soon"
-	#Use sonar_ping.py
 
+
+
+def read_ultrasonic():
+	number_of_readings=5
+	number_of_samples=15
+	ping_timeout=200000
+	debug = False
+
+	all_readings = []
+	for j in range(number_of_readings):
+
+	        reading_list = []
+		readings_used = 0
+	        for i in range(number_of_samples):
+			# 50 ms is the max timeout if nothing in range.
+	               	# time.sleep(0.005)
+			timeout_flag = False
+
+			FIRMATA_PIN_RED_LED.write(1)
+			FIRMATA_PIN_GREEN_LED.write(0)
+
+	                # set our trigger high, triggering a pulse to be sent.
+	                GPIO.output(trigger_pin, GPIO.HIGH)
+	                time.sleep(0.00001)
+	                GPIO.output(trigger_pin, GPIO.LOW)
+
+			timeout_start = datetime.now()
+
+			# Wait for our pin to go high, waiting for a response.
+	                while not GPIO.input(echo_pin):
+				timeout_end = datetime.now()
+				timeout_delta = timeout_end - timeout_start
+				if timeout_delta.microseconds > ping_timeout:
+					if debug:
+						print "Timeout A"
+					timeout_flag = True
+					break
+	                        pass
+
+			# Now its high, get our start time
+			timeout_start = datetime.now()
+	                start = datetime.now()
+	
+			# wait for our input to go low
+	                while GPIO.input(echo_pin):
+				timeout_end = datetime.now()
+				timeout_delta = timeout_end - timeout_start
+				if timeout_delta.microseconds > ping_timeout:
+					if debug:
+						print "Timeout B"
+					timeout_flag = True
+					break
+	                        pass
+
+	                # Now its low, grab our end time
+	                end = datetime.now()
+
+	                # Store our delta.
+			if not timeout_flag:
+	                	delta = end - start
+	   			reading_list.append(delta.microseconds)
+				readings_used = readings_used + 1
+
+				if debug:
+					print "Microseconds %1.f" % delta.microseconds
+
+			FIRMATA_PIN_RED_LED.write(0)
+			FIRMATA_PIN_GREEN_LED.write(1)
+
+
+	                # take a little break, it appears to help stabalise readings
+	                # I suspect due to less interference with previous readings
+	                time.sleep(0.00002)
+
+	        average_reading = sum(reading_list)/len(reading_list)
+
+	        all_readings.append(average_reading)
+
+	FIRMATA_PIN_RED_LED.write(1)
+	FIRMATA_PIN_GREEN_LED.write(1)
+
+	average_of_all_readings = sum(all_readings)/len(all_readings)
+	average_distance=average_of_all_readings * 340
+	average_distance=average_distance/20000
+	return_text = "%s cm" % average_distance
+
+	FIRMATA_PIN_RED_LED.write(0)
+	FIRMATA_PIN_GREEN_LED.write(0)
+
+	return return_text
 
 def read_arduino_temperature():
 	while FIRMATA_PIN_TEMPERATURE.read() is None:
@@ -102,7 +204,8 @@ def read_arduino_temperature():
 ############## MENU HANDLER ####################
 MENU_KEY = ["IP address", "Onboard temp", "Arduino temp", "Arduino LDR", "Arduino magnet", "Arduino distance"]
 def processMenuItem(step):
-	reading_text = "TBD"
+	# For development, you can lock the function by specifying an override for 'step'
+	#step = 5
 
 	if step == 0:
 		local_hostname=socket.gethostname()
@@ -148,10 +251,14 @@ def main():
 	time.sleep(0.5)
 
 	# header
-	send_to_lcd("          ", "         ")
-	time.sleep(2)
 	send_to_lcd("-=PiPodCorder=-", "Starting up...")
+	FIRMATA_PIN_GREEN_LED.write(0)
+	FIRMATA_PIN_GREEN_LED.write(1)
+	FIRMATA_PIN_RED_LED.write(0)
+	FIRMATA_PIN_RED_LED.write(1)
 	time.sleep(0.5)
+	FIRMATA_PIN_GREEN_LED.write(1)
+	FIRMATA_PIN_RED_LED.write(0)
 	#lcd_init()
 
 	CURRENT_MENU_KEY=0

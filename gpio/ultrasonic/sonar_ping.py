@@ -3,11 +3,12 @@ import RPi.GPIO as GPIO
 from datetime import datetime
 import time
 
-trigger_pin=14
-echo_pin=4
+trigger_pin=27
+echo_pin=22
 number_of_samples=10
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 GPIO.setup(trigger_pin, GPIO.OUT)
 GPIO.setup(echo_pin, GPIO.IN)
 
