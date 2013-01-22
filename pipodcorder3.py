@@ -202,7 +202,7 @@ def read_arduino_temperature():
 	return temperature_string
 
 ############## MENU HANDLER ####################
-MENU_KEY = ["IP address", "Onboard temp", "Arduino temp", "Arduino LDR", "Arduino magnet", "Arduino distance"]
+MENU_KEY = ["IP address", "Temp TMP102", "Temp on Arduino", "Light level", "Magnetism", "U/sonic distance"]
 def processMenuItem(step):
 	# For development, you can lock the function by specifying an override for 'step'
 	#step = 5
@@ -275,6 +275,7 @@ def main():
 		EXIT_KEY_PRESSED=FIRMATA_PIN_MENU_EXIT.read()
 
 	send_to_lcd("-====v==v====-", "-= Shutdown =-")
+	send_to_lcd("              ", "               ")
 
 	FIRMATA_BOARD.exit()
 	sys.exit(0)
