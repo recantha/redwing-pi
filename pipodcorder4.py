@@ -21,6 +21,7 @@ import subprocess as sub
 import serial
 import pyfirmata
 import sys
+import eeml
 
 from datetime import datetime
 
@@ -72,17 +73,19 @@ GPIO.setwarnings(False)
 GPIO.setup(trigger_pin, GPIO.OUT)
 GPIO.setup(echo_pin, GPIO.IN)
 
-
-
 #################################
 # TRICORDER FUNCTIONS
 #################################
 
 def get_ip_addresses():
 	FIRMATA_PIN_GREEN_LED.write(1)
+	FIRMATA_PIN_RED_LED.write(0)
+
 	ips = commands.getoutput("/sbin/ifconfig | grep -i \"inet\" | grep -iv \"inet6\" | " + "awk {'print $2'} | sed -ne 's/addr\:/ /p'")
 	addrs = ips.split('\n')
 	FIRMATA_PIN_GREEN_LED.write(0)
+	FIRMATA_PIN_RED_LED.write(1)
+
 	return addrs
 
 
@@ -91,11 +94,20 @@ def read_temperature():
 	FIRMATA_PIN_GREEN_LED.write(1)
 	gettemp = sub.Popen(['gpio/tmp102/temperature_read.sh'], stdout=sub.PIPE, stderr=sub.PIPE)
 	temp = gettemp.communicate()
+
+	COSM_API_KEY = "oXbwnXgQ3OXIXNtSP8SnSt4C0U2SAKxJdlo1OEpoVTFMbz0g" # Cosm API key
+	COSM_FEED_ID = 99986 # your Cosm feed ID
+	COSM_API_URL = '/v2/feeds/{feednum}.xml' .format(feednum = COSM_FEED_ID)
+
 	FIRMATA_PIN_GREEN_LED.write(0)
+	FIRMATA_PIN_RED_LED.write(1)
+
+	pac = eeml.Pachube(COSM_API_URL, COSM_API_KEY)
+	pac.update([eeml.Data(0, temp[0], unit=eeml.Celsius())])
+	pac.put()
+
+	FIRMATA_PIN_RED_LED.write(0)
 	return temp[0]
-
-
-
 
 def read_ultrasonic():
 	number_of_readings=5
@@ -187,6 +199,9 @@ def read_ultrasonic():
 	return return_text
 
 def read_arduino_temperature():
+	FIRMATA_PIN_RED_LED.write(1)
+	FIRMATA_PIN_GREEN_LED.write(0)
+
 	while FIRMATA_PIN_TEMPERATURE.read() is None:
 		pass
 
@@ -198,6 +213,9 @@ def read_arduino_temperature():
 	# fiddle around with it - the + figure on the end is calibration
 	temperature_string = temp_based / 10 + 8
 	temperature_string = "%1.f oC" % temperature_string
+
+	FIRMATA_PIN_RED_LED.write(0)
+	FIRMATA_PIN_GREEN_LED.write(1)
 
 	return temperature_string
 
@@ -222,12 +240,20 @@ def processMenuItem(step):
 		send_to_lcd(MENU_KEY[step], reading_text)
 
 	if step == 3:
+		FIRMATA_PIN_RED_LED.write(0)
+		FIRMATA_PIN_GREEN_LED.write(1)
 		llevel="%.1f lux" % (FIRMATA_PIN_LDR.read() * 5 * 100)
 		send_to_lcd(MENU_KEY[step], llevel)
+		FIRMATA_PIN_RED_LED.write(1)
+		FIRMATA_PIN_GREEN_LED.write(0)
 
 	if step == 4:
+		FIRMATA_PIN_RED_LED.write(0)
+		FIRMATA_PIN_GREEN_LED.write(1)
 		magnt="%.1f g" % (FIRMATA_PIN_MAGNET.read() * 5 * 100)
 		send_to_lcd(MENU_KEY[step], magnt)
+		FIRMATA_PIN_RED_LED.write(1)
+		FIRMATA_PIN_GREEN_LED.write(0)
 
 	if step == 5:
 		distance_text = read_ultrasonic()
@@ -259,18 +285,24 @@ def main():
 	time.sleep(0.5)
 	FIRMATA_PIN_GREEN_LED.write(1)
 	FIRMATA_PIN_RED_LED.write(0)
-	#lcd_init()
 
+	# Main loop - keep doing what you're doing until the Next key is pressed
+	# or the exit key is pressed
 	CURRENT_MENU_KEY=0
 	EXIT_KEY_PRESSED=False
 
 	while not EXIT_KEY_PRESSED:
 		step_pressed=FIRMATA_PIN_MENU_STEP.read()
 
-		print "step passed"
-		print step_pressed
-
 		if step_pressed:
+			FIRMATA_PIN_GREEN_LED.write(0)
+			FIRMATA_PIN_RED_LED.write(1)
+			time.sleep(0.01)
+			FIRMATA_PIN_GREEN_LED.write(1)
+			FIRMATA_PIN_RED_LED.write(0)
+			time.sleep(0.01)
+			FIRMATA_PIN_GREEN_LED.write(0)
+
 			CURRENT_MENU_KEY=CURRENT_MENU_KEY+1
 			if CURRENT_MENU_KEY == len(MENU_KEY):
 				CURRENT_MENU_KEY=0
